@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+title: Encipher Systems Lab Cards
+message: If you use these cards, cite this repository.
+type: software
+authors:
+  - name: Encipher Systems LLC
+    website: https://enciphersystems.com
+    email: info@enciphersystems.com
+repository-code: https://github.com/EncipherSys/encipher-labcard
+license: Apache-2.0
+abstract: >
+  Public circuit cards and schemas Encipher Systems uses when a lab
+  needs a hashed known-answer bundle. CPU-only default. Not a quantum
+  SDK, not a backend, and not a QPU service.
