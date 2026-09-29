@@ -1,0 +1,11 @@
+{
+  "id": "bell-v1",
+  "title": "Bell pair",
+  "license": "Apache-2.0",
+  "qubit_count": 2,
+  "endian": "qiskit-little",
+  "expected": {"probabilities": {"00": 0.5, "11": 0.5}},
+  "cpu_oracle": {"status": "AGREE", "ulp_bound": 1e-12},
+  "pins": {"oracle": "stdlib-statevector"},
+  "cause_tags": []
+}

@@ -1,0 +1,11 @@
+{
+  "id": "rotation-ulp-v1",
+  "title": "RY(pi) single qubit",
+  "license": "Apache-2.0",
+  "qubit_count": 1,
+  "endian": "qiskit-little",
+  "expected": {"probabilities": {"1": 1.0}},
+  "cpu_oracle": {"status": "AGREE", "ulp_bound": 1e-12},
+  "pins": {"oracle": "stdlib-statevector"},
+  "cause_tags": ["FP32_DEFAULT"]
+}

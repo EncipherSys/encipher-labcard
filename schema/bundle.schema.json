@@ -1,0 +1,5 @@
+{
+  "title": "Encipher hashed bundle manifest",
+  "type": "object",
+  "required": ["bundle_id", "created", "pins", "cards", "fictional", "notes"]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "aer-gpu-will-not-run-v1",
+  "title": "qiskit-aer-gpu published platform constraint",
+  "license": "Apache-2.0",
+  "qubit_count": 1,
+  "endian": "qiskit-little",
+  "expected": {"probabilities": {"0": 1.0}},
+  "cpu_oracle": {"status": "WILL_NOT_RUN", "ulp_bound": 1.0},
+  "pins": {"qiskit-aer-gpu": "published-x86_64-linux-only"},
+  "cause_tags": ["WRONG_WHEEL", "PUBLISHED_CONSTRAINT", "REFUSE"],
+  "source": "https://pypi.org/project/qiskit-aer-gpu/"
+}

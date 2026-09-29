@@ -1,0 +1,11 @@
+{
+  "id": "endian-disagree-v1",
+  "title": "H on q0 with MSB-left expected bits",
+  "license": "Apache-2.0",
+  "qubit_count": 2,
+  "endian": "msb-left",
+  "expected": {"probabilities": {"10": 1.0}},
+  "cpu_oracle": {"status": "DISAGREE_STRUCTURAL", "ulp_bound": 1e-12},
+  "pins": {"oracle": "stdlib-statevector"},
+  "cause_tags": ["ENDIAN_CONTRACT"]
+}

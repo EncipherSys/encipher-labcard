@@ -1,0 +1,5 @@
+{
+  "title": "Encipher lab card",
+  "type": "object",
+  "required": ["id", "title", "license", "qubit_count", "endian", "expected", "cpu_oracle", "pins", "cause_tags"]
+}

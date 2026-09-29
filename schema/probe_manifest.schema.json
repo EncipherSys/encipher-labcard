@@ -1,0 +1,5 @@
+{
+  "title": "Encipher probe manifest schema",
+  "type": "object",
+  "required": ["manifest_version", "host", "pins", "targets"]
+}

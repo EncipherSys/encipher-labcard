@@ -1,0 +1,18 @@
+{
+  "bundle_id": "sample-fictional-2026-09-29",
+  "created": "2026-09-29",
+  "fictional": true,
+  "pins": {
+    "qiskit": "example-only",
+    "qiskit-aer": "example-only",
+    "cudaq": "not-measured"
+  },
+  "cards": [
+    {"id": "bell-v1", "status": "AGREE"},
+    {"id": "ghz-n4-v1", "status": "AGREE"},
+    {"id": "rotation-ulp-v1", "status": "AGREE"},
+    {"id": "endian-disagree-v1", "status": "DISAGREE_STRUCTURAL"},
+    {"id": "aer-gpu-will-not-run-v1", "status": "WILL_NOT_RUN"}
+  ],
+  "notes": "Fictional pins. Not a measurement on a named lab machine."
+}
