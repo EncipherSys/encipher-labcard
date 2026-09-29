@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Validate public lab cards. Stdlib only. Cards are JSON written as card.yaml."""
+"""Validate public lab cards with the standard library only."""
+
 from __future__ import annotations
 
 import json
@@ -8,8 +9,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CARDS = ROOT / "cards"
-REQUIRED = ("id", "title", "provenance", "status", "qubits")
-PROVENANCE = {"cpu_oracle", "published_constraint"}
 STATUSES = {
     "RUNS",
     "CPU_ONLY",
@@ -26,44 +25,58 @@ def load_card(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def validate(path: Path) -> list[str]:
-    errors = []
-    try:
-        card = load_card(path)
-    except json.JSONDecodeError as exc:
-        return [f"{path}: not JSON ({exc})"]
-    for key in REQUIRED:
+def validate(card: dict, path: Path) -> list[str]:
+    errors: list[str] = []
+    required = [
+        "id",
+        "title",
+        "license",
+        "qubit_count",
+        "endian",
+        "expected",
+        "cpu_oracle",
+        "pins",
+        "cause_tags",
+    ]
+    for key in required:
         if key not in card:
             errors.append(f"{path}: missing {key}")
     if card.get("id") != path.parent.name:
-        errors.append(f"{path}: id {card.get('id')!r} != directory {path.parent.name!r}")
-    if card.get("provenance") not in PROVENANCE:
-        errors.append(f"{path}: bad provenance {card.get('provenance')!r}")
-    if card.get("status") not in STATUSES:
-        errors.append(f"{path}: bad status {card.get('status')!r}")
-    if not isinstance(card.get("qubits"), int) or card["qubits"] < 0:
-        errors.append(f"{path}: qubits must be a non-negative int")
+        errors.append(f"{path}: id {card.get('id')!r} does not match directory")
+    if card.get("license") != "Apache-2.0":
+        errors.append(f"{path}: license must be Apache-2.0")
+    if card.get("endian") not in {"qiskit-little", "msb-left"}:
+        errors.append(f"{path}: unknown endian")
+    status = card.get("cpu_oracle", {}).get("status")
+    if status not in STATUSES:
+        errors.append(f"{path}: unknown cpu_oracle.status {status!r}")
+    expected = card.get("expected", {})
+    probs = expected.get("probabilities", {})
+    if abs(sum(probs.values()) - 1.0) > 1e-9:
+        errors.append(f"{path}: probabilities must sum to 1")
+    for filename in ("circuit.qasm", "circuit_qiskit.py", "circuit_pennylane.py"):
+        if not (path.parent / filename).is_file():
+            errors.append(f"{path.parent}: missing {filename}")
     return errors
 
 
 def main() -> int:
-    paths = sorted(CARDS.glob("*/card.yaml"))
-    if not paths:
+    errors: list[str] = []
+    cards = sorted(CARDS.glob("*/card.yaml"))
+    if not cards:
         print("no cards found", file=sys.stderr)
         return 1
-    errors: list[str] = []
-    for path in paths:
-        item_errors = validate(path)
-        if item_errors:
-            print(f"fail {path.parent.name}")
-            errors.extend(item_errors)
-        else:
-            print(f"ok {path.parent.name}")
+    for path in cards:
+        try:
+            card = load_card(path)
+        except json.JSONDecodeError as exc:
+            errors.append(f"{path}: {exc}")
+            continue
+        errors.extend(validate(card, path))
     if errors:
-        for item in errors:
-            print(item, file=sys.stderr)
+        print("\n".join(errors), file=sys.stderr)
         return 1
-    print(f"validated {len(paths)} cards")
+    print(f"ok {len(cards)} cards")
     return 0
 
 
